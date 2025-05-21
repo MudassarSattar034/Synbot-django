@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block title %} Chat {% endblock %} 
+{% block styles%} 
+{% endblock %} 
+{% block content %}
+
+
+
+    <!-- Main Chat Area -->
+<main class="flex-1 flex flex-col items-center py-4 px-4">
+      <h1 class="text-3xl md:text-4xl font-semibold text-white mb-4 text-center">
+        Talk to SyncBot <span class="text-purple-400">(Powered by Gemini)</span>
+      </h1>
+
+      <div class="w-full max-w-3xl bg-zinc-800 shadow-lg rounded-xl p-6 space-y-4">
+        <!-- Chat Area -->
+        <div
+          id="response"
+          class="h-80 overflow-y-auto p-4 border border-zinc-700 rounded-md bg-zinc-900 space-y-4"
+        >
+          <!-- Messages appear here -->
+        </div>
+
+        <!-- Input Area -->
+        <div class="flex items-center gap-2">
+          <input
+            type="text"
+            id="message"
+            placeholder="Ask anything..."
+            class="flex-1 p-3 border border-zinc-700 rounded-lg bg-zinc-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+          <button
+            onclick="sendMessage()"
+            class="px-5 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </main>
+
+<script>
+      async function sendMessage() {
+        const messageInput = document.getElementById("message");
+        const message = messageInput.value.trim();
+        const responseContainer = document.getElementById("response");
+
+        if (!message) return;
+
+        // Display user message
+        const userMessage = document.createElement("div");
+        userMessage.className = "text-right";
+        userMessage.innerHTML = `
+          <span class="inline-block bg-purple-700 text-white p-2 rounded-lg max-w-xs break-words">
+            ${sanitize(message)}
+          </span>`;
+        responseContainer.appendChild(userMessage);
+
+        // Clear input
+        messageInput.value = "";
+
+        // Add loader
+        const botMessage = document.createElement("div");
+        botMessage.className = "text-left";
+        const loadingSpan = document.createElement("span");
+        loadingSpan.className =
+          "inline-block bg-zinc-700 text-white p-2 rounded-lg max-w-xs break-words";
+        loadingSpan.innerHTML =
+          `<span class="dot-flash">SyncBot is typing<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>`;
+        botMessage.appendChild(loadingSpan);
+        responseContainer.appendChild(botMessage);
+        responseContainer.scrollTop = responseContainer.scrollHeight;
+
+        try {
+          const res = await fetch("/get_response/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `message=${encodeURIComponent(message)}`,
+          });
+
+          const data = await res.json();
+          const fullMarkdown = `SyncBot: \n\n${data.response}`;
+
+          // Remove loading text
+          // Remove loading text
+loadingSpan.remove();
+
+
+const markdownDiv = document.createElement("div");
+markdownDiv.className =
+  "inline-block bg-zinc-700 text-white p-3 rounded-lg max-w-4xl break-words markdown-content";
+markdownDiv.innerHTML = ""; // Start empty
+botMessage.appendChild(markdownDiv);
+
+// Simulate typing effect
+let index = 0;
+const typeInterval = 20; // Milliseconds per character
+
+function typeWriter() {
+  if (index < fullMarkdown.length) {
+    const nextChunk = fullMarkdown.slice(0, index + 1);
+    markdownDiv.innerHTML = marked.parse(nextChunk);
+    responseContainer.scrollTop = responseContainer.scrollHeight;
+    index++;
+    setTimeout(typeWriter, typeInterval);
+  }
+}
+typeWriter();
+
+        } catch (err) {
+          loadingSpan.innerHTML = "❌ Error: Failed to fetch response.";
+        }
+      }
+
+      // Sanitize user input (basic)
+      function sanitize(str) {
+        const div = document.createElement("div");
+        div.textContent = str;
+        return div.innerHTML;
+      }
+    </script>
+
+<style>
+      .dot-flash .dot {
+        animation: blink 1.2s infinite;
+        margin-left: 2px;
+      }
+
+      .dot-flash .dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .dot-flash .dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes blink {
+        0%,
+        20% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      /* Markdown styles */
+      .markdown-content p {
+        margin: 0.5rem 0;
+      }
+
+      .markdown-content code {
+        background-color: #1f2937;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        font-family: monospace;
+      }
+
+      .markdown-content pre {
+        background-color: #1f2937;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        font-family: monospace;
+      }
+    </style>
+
+
+{% endblock %}

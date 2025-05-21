@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sing Up</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+</head>
+<body class="w-full bg-gray-100 flex flex-col items-center justify-center min-h-screen py-10">
+
+  {% if messages %}
+    <div class="w-full max-w-md p-4">
+      {% for msg in messages %}
+        {% if msg.tags == 'success' %}
+          <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+            <span class="font-medium">Success!</span> {{ msg.message }}
+          </div>
+        {% elif msg.tags == 'error' %}
+          <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            <span class="font-medium">Error!</span> {{ msg.message }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="w-full max-w-md bg-white shadow-xl rounded-xl p-8">
+    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Sign Up</h2>
+
+    <form action="{% url 'sign_up' %}" method="post" class="space-y-5">
+      {% csrf_token %}
+      
+      {% for field in form %}
+        <div>
+          <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ field.label }}
+          </label>
+          {{ field }}
+          {% if field.help_text %}
+            <p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>
+          {% endif %}
+          {% for error in field.errors %}
+            <p class="text-sm text-red-500 mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+          <p class="text-sm text-red-500 text-center">{{ error }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <button type="submit" class="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-900 transition">
+        Sign Up
+      </button>
+    </form>
+  </div>
+</body>
+
+</html>

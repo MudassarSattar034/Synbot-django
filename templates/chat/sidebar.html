@@ -1,0 +1,53 @@
+{% block content %}
+
+<!-- Sidebar -->
+<aside class="w-64 bg-zinc-900 text-white flex flex-col  p-4 border-r border-zinc-700">
+  
+
+  <!-- New Chat Button -->
+  <button class="w-full flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-3 py-2 rounded-md mb-4 transition">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+    </svg>
+    New Chat
+  </button>
+
+  <!-- Chat History -->
+  <div class="flex-1 overflow-y-auto space-y-4 pr-1">
+    <!-- Today -->
+    <div>
+      <p class="text-xs text-zinc-400 uppercase mb-2">Today</p>
+      <nav class="space-y-1">
+        <a href="#" class="block px-3 py-2 text-sm rounded-md hover:bg-zinc-800">UX research</a>
+        <a href="#" class="block px-3 py-2 text-sm rounded-md hover:bg-zinc-800">Login Headlines</a>
+      </nav>
+    </div>
+
+    <!-- Yesterday -->
+    <div>
+      <p class="text-xs text-zinc-400 uppercase mb-2">Yesterday</p>
+      <nav class="space-y-1">
+        <a href="#" class="block px-3 py-2 text-sm rounded-md hover:bg-zinc-800">UI Design Suggestions</a>
+      </nav>
+    </div>
+
+    <!-- Earlier -->
+    <div>
+      <p class="text-xs text-zinc-400 uppercase mb-2">Last Week</p>
+      <nav class="space-y-1">
+        <a href="#" class="block px-3 py-2 text-sm rounded-md hover:bg-zinc-800">Client Feedback</a>
+        <a href="#" class="block px-3 py-2 text-sm rounded-md hover:bg-zinc-800">Wireframe Review</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Footer Buttons -->
+  <div class="border-t border-zinc-700 pt-2 space-y-2">
+    <a href="#" class="block w-full px-3 py-2 text-sm rounded-md hover:bg-zinc-800">Settings</a>
+    <a href="#" class="block w-full px-3 py-2 text-sm rounded-md hover:bg-zinc-800">Upgrade Plan</a>
+  </div>
+</aside>
+
+
+
+    {% endblock %}

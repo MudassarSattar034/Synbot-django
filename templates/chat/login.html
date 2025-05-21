@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% block title %} Login {% endblock %} {% block styles
+%} {% endblock %} {% block content %}
+<div class="min-h-screen flex items-center justify-center bg-black px-4">
+  <div
+    class="flex w-full max-w-3xl bg-[#1e1e1e] rounded-xl overflow-hidden shadow-lg"
+  >
+    <!-- Left Panel: Login -->
+    <div class="w-1/2 p-10">
+      <h2 class="text-2xl font-bold text-purple-500 mb-6 text-center">
+        Login to SyncBot
+      </h2>
+
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+
+        <div class="relative">
+          <span class="absolute left-3 top-2.5 text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M16 12a4 4 0 10-8 0 4 4 0 008 0z" />
+              <path
+                d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"
+              />
+            </svg>
+          </span>
+          <input
+            name="username"
+            type="text"
+            placeholder="Email"
+            required
+            class="w-full pl-10 pr-4 py-2 bg-white text-black rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+
+        <div class="relative">
+          <span class="absolute left-3 top-2.5 text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+              />
+            </svg>
+          </span>
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+            class="w-full pl-10 pr-4 py-2 bg-white text-black rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+
+        <div class="text-right">
+          <a href="#" class="text-sm text-gray-400 hover:underline"
+            >Forgot your Password?</a
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-md transition"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+
+    <!-- Right Panel -->
+    <div
+      class="w-1/2 bg-[#1a1a1a] flex flex-col items-center justify-center p-10 text-center text-white"
+    >
+      <h3 class="text-xl font-bold text-purple-500 mb-2">
+        Don’t have an account
+      </h3>
+      <p class="text-sm text-gray-400 mb-6">
+        To keep connected with us please Sign with your Personal info
+      </p>
+      <a href="{% url 'register' %}">
+        <button
+          class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-md transition"
+        >
+          Sign in
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

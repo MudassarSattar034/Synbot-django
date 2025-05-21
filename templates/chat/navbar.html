@@ -1,0 +1,117 @@
+{% block content %}
+<!-- templates/chat/navbar.html -->
+<header class="w-full bg-zinc-800 border-b border-zinc-700 sticky fixed py-2  px-4 flex justify-between items-center">
+  <h1 class="text-lg font-semibold">SyncBot</h1>
+  <div class="flex items-center gap-4">
+    
+  <div class="flex items-end gap-4">
+    <button class="bg-purple-600 text-sm px-4 py-2 rounded-md hover:bg-purple-700 transition">Try Premium</button>
+    
+    {% if user.is_authenticated %}
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="bg-black text-sm px-4 py-2 rounded-md hover:bg-gray-700 transition cursor-pointer">
+        Logout
+      </button>
+    </form>
+    {% else %}
+    <a href="{% url 'login' %}" class="bg-black text-sm px-4 py-2 rounded-md hover:bg-gray-700 transition cursor-pointer">
+      Login
+      </a>  
+    {% endif %}
+
+  </div>
+
+  <div class="relative flex items-center space-x-3 md:space-x-0">
+  <!-- Profile image button -->
+  <button
+    type="button"
+    id="user-menu-button"
+    data-dropdown-toggle="user-dropdown"
+    data-dropdown-placement="bottom-end"
+    class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300"
+  >
+    <span class="sr-only">Open user menu</span>
+    <img
+      class="w-10 h-10 rounded-full object-cover object-center"
+      src="http://127.0.0.1:8000/media/{{ user.profile_picture }}"
+      alt="User photo"
+    />
+  </button>
+
+  <!-- Dropdown menu -->
+  <div
+    id="user-dropdown"
+    class="hidden absolute right-0 top-12 z-50 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="user-menu-button"
+    tabindex="-1"
+  >
+    <div class="px-4 py-3 border-b dark:border-gray-700">
+      <p class="text-sm font-semibold text-gray-900 dark:text-white">
+        {{ user.first_name }} {{ user.last_name }}
+      </p>
+      <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+        {{ user.email }}
+      </p>
+    </div>
+    <ul class="py-2" role="none">
+      <li>
+        <a
+          href="#"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
+          role="menuitem"
+        >
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a
+          href="#"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
+          role="menuitem"
+        >
+          Settings
+        </a>
+      </li>
+      <li>
+        <a
+          href="#"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
+          role="menuitem"
+        >
+          Earnings
+        </a>
+      </li>
+      <li>
+        <a
+          href="{% url 'logout' %}"
+          class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-red-400 dark:hover:text-white"
+          role="menuitem"
+        >
+          Sign out
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Mobile hamburger button -->
+  <button
+    data-collapse-toggle="navbar-user"
+    type="button"
+    class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-300 dark:text-gray-400 dark:hover:bg-gray-700"
+    aria-controls="navbar-user"
+    aria-expanded="false"
+  >
+    <span class="sr-only">Open main menu</span>
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+</div>
+
+  </div>
+</header>
+
+ {% endblock %}
